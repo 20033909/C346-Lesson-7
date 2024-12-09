@@ -2,48 +2,56 @@ import React, { useState, useEffect } from 'react';
 import { Image, Text } from 'react-native';
 import styles from './styles';
 
-const ImageExistCheck = ({ imageName }) => {  // Changed component name to ImageExistCheck
-    const [validImageUrl, setValidImageUrl] = useState(null);  // State to hold the valid image URL
-    const [loading, setLoading] = useState(true);  // State to track if the image is loading
+const ImageExistCheck = ({ imageName }) => {
+    const [validImageUrl, setValidImageUrl] = useState(null);
+    const [loading, setLoading] = useState(true);
 
+    // Function to check if the image exists at a given URL
     const checkImageExists = async (url) => {
         try {
             const response = await fetch(url, { method: 'HEAD' });
-            return response.ok;  // Return true if the image exists (status 200)
-        } catch (error) {
-            console.error('Error checking image:', error);
-            return false;  // Return false if there was an error
+            return response.ok; // Return true if the image exists (status 200)
+        } catch {
+            return false; // Return false if there was an error
         }
     };
 
-    // Function to try different URLs
+    // Try all URLs concurrently using Promise.all
     const tryImageUrls = async () => {
-        const baseUrl = "https://cats.com/wp-content/uploads/2020/10/";
-
         // List of image URLs to check
         const imageUrls = [
-            baseUrl + imageName + "-compressed-1-540x360.jpg",
-            baseUrl + imageName + "-compressed-540x360.jpg",
-            baseUrl + imageName + "-540x360.jpg",
-            baseUrl + imageName + "-1.jpg", // Fallback image format
+            'https://danielfooddiary.com/wp-content/uploads/' + imageName,
+            'https://www.subway.com/ns/images/menu/SIN/ENG/' + imageName,
+            'https://www.mcdonalds.com.sg/sites/default/files/' + imageName,
+            'https://www.vforveganista.com/wp-content/uploads/' + imageName,
+            imageName // Local file check (if necessary)
         ];
 
-        // Check each URL
-        for (let url of imageUrls) {
-            const imageExists = await checkImageExists(url);
-            if (imageExists) {
-                setValidImageUrl(url);  // Set the valid image URL
-                setLoading(false);  // Stop loading once a valid image is found
-                return;
-            }
+        // Try all URLs concurrently using Promise.all
+        const results = await Promise.all(imageUrls.map((url) => checkImageExists(url)));
+        const validIndex = results.findIndex((exists) => exists);
+
+        if (validIndex !== -1) {
+            setValidImageUrl(imageUrls[validIndex]);
+        } else {
+            setValidImageUrl(getRandomPlaceholder()); // Set a random placeholder if no image is found
         }
 
-        // If no valid image is found, set a placeholder
-        setValidImageUrl('https://img.freepik.com/premium-vector/lost-missing-pet-animal-poster-notice-announcement-wall-concept_133260-7418.jpg');
-        setLoading(false);
+        setLoading(false); // Stop loading regardless of success or failure
     };
 
-    // Run the image check when the component mounts
+    // Function to return a random placeholder image
+    const getRandomPlaceholder = () => {
+        const randomPlaceholderIndex = Math.floor(Math.random() * 3);
+        const placeholderImages = [
+            require('../assets/images/placeholder1.png'),
+            require('../assets/images/placeholder2.png'),
+            require('../assets/images/placeholder3.png'),
+        ];
+        return placeholderImages[randomPlaceholderIndex];
+    };
+
+    // Run the image check when the component mounts or imageName changes
     useEffect(() => {
         tryImageUrls();
     }, [imageName]); // Re-run if the imageName changes
@@ -53,7 +61,13 @@ const ImageExistCheck = ({ imageName }) => {  // Changed component name to Image
         return <Text>Loading...</Text>;
     }
 
-    return <Image source={{ uri: validImageUrl }}  style={styles.image}/>;
+    // Conditionally render Image component based on whether the URL is remote or local
+    return (
+        <Image
+            source={typeof validImageUrl === 'string' ? { uri: validImageUrl } : validImageUrl}
+            style={styles.image}
+        />
+    );
 };
 
 export default ImageExistCheck;

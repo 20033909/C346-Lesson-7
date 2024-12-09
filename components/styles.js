@@ -5,20 +5,26 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#ff7974',
-        justifyContent: 'center',
-        alignItems: 'center',
+        paddingHorizontal: 10,
+        paddingTop: 31,
+
+
+
 
     },
+
     button: {
-
         backgroundColor: '#fff',
-
-
         padding: 15,
         borderRadius: 12,
         marginBottom: 10,
         justifyContent: 'center',
         alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        elevation: 3,
     },
     buttonContent: {
 
@@ -48,7 +54,6 @@ const styles = StyleSheet.create({
     },
     sectionHeader: {
         padding: 8.5,
-        width: '100%',
 
 
     },
@@ -60,7 +65,7 @@ const styles = StyleSheet.create({
         color: '#fff', // White text for contrast
 
     },
-    cat: {
+    item: {
 
 
         flexDirection: 'row',  // Horizontal layout
@@ -71,9 +76,11 @@ const styles = StyleSheet.create({
         width: '100%',  // Take up full width of the container
 
 
+
+
     },
     name: {
-        fontSize: 15,
+        fontSize: 14,
         flex: 4,
         textAlign: "center",
         fontWeight: "700"
@@ -81,7 +88,7 @@ const styles = StyleSheet.create({
 
     },
     kcal: {
-        fontSize: 15,
+        fontSize: 14,
         flex: 1,
         textAlign: "center",
         fontWeight: "500"
@@ -93,28 +100,25 @@ const styles = StyleSheet.create({
         padding: 11,
 
     },
-    shortHairHeader: {
-        backgroundColor: 'red',  // Red background for Fire Type
-    },
-    longHairHeader: {
-        backgroundColor: 'gold'  // Yellow background for Lightning Type
-    },
-    addupdateContainer: {
-        padding: 20,
-        backgroundColor: '#ed556a',
-        flex: 1
-    },
+
+
     image:{
         width: 68,
         height: 68,
 
 
     },
-    addupdatelabels: {
-        fontWeight: '300',
-        fontFamily: 'Arial',
-        marginVertical: 10,
-        fontSize: 20
+    labels: {
+
+        marginVertical: 3.5,
+        fontSize: 15,
+        fontWeight: '600',
+        color: '#351E10'
+    },
+    textbox: {
+        borderWidth: 1,
+        backgroundColor: '#fff',
+        marginBottom: 6.5,
     },
     addupdatebuttons:{
         marginVertical: 10,
@@ -125,12 +129,30 @@ const styles = StyleSheet.create({
         borderColor: '#000',
     },
     thickUnderline: {
-        height: 4, // This controls the thickness of the underline
-        backgroundColor: '#fff', // Color of the underline
-        width: '37%', // Full width under the text
-        marginTop: 3, // Space between the text and the underline
+        height: 4,
+        backgroundColor: '#fff',
+        width: '37%',
+        margin: 5,
         alignSelf: 'center'
 
+    },
+    titleContainer: {
+        alignItems: 'center',
+        marginVertical: 18
+    },
+    titleText: {
+        fontSize: 34,
+        fontWeight: 'bold',
+        color: '#fff',
+        fontFamily: 'sans-serif-condensed',
+    },
+    topButton: {
+        marginTop: 40,
+    },
+    iconContainer: {
+        flexDirection: 'row',  // Makes the icons appear in a row
+        justifyContent: 'center',  // Centers the icons horizontally
+        marginTop: 10,  // Adds some space between the title and icons
     },
 
 
